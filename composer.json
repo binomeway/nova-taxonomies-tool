@@ -1,6 +1,6 @@
 {
     "name": "binomeway/nova-taxonomies-tool",
-    "description": "A Laravel Nova tool.",
+    "description": "A Laravel Nova tool to manage taxonomies.",
     "keywords": [
         "laravel",
         "nova"

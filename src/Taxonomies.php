@@ -30,6 +30,7 @@ class Taxonomies
 
     public function types()
     {
+        // TODO: Add the possibility to retrieve them from a database
         return $this->types;
     }
 }
