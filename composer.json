@@ -1,0 +1,33 @@
+{
+    "name": "binomeway/nova-taxonomies-tool",
+    "description": "A Laravel Nova tool.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0",
+        "spatie/laravel-tags": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BinomeWay\\NovaTaxonomiesTool\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BinomeWay\\NovaTaxonomiesTool\\ToolServiceProvider"
+            ],
+            "aliases": {
+                "Taxonomies": "BinomeWay\\NovaTaxonomiesTool\\Facades\\Taxonomies"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
