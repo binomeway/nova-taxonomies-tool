@@ -3,6 +3,7 @@
 namespace BinomeWay\NovaTaxonomiesTool;
 
 use BinomeWay\NovaTaxonomiesTool\Resources\Tag;
+use BinomeWay\NovaTaxonomiesTool\Resources\TaxonomyType;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -19,6 +20,7 @@ class NovaTaxonomiesTool extends Tool
         //Nova::style('nova-taxonomies-tool', __DIR__.'/../dist/css/tool.css');
 
         Nova::resources([
+            TaxonomyType::class,
             Tag::class,
         ]);
     }
@@ -30,7 +32,6 @@ class NovaTaxonomiesTool extends Tool
      */
     public function renderNavigation()
     {
-        return null;
-        //return view('nova-taxonomies-tool::navigation');
+        return view('nova-taxonomies-tool::navigation');
     }
 }
