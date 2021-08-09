@@ -2,30 +2,41 @@
 
 namespace BinomeWay\NovaTaxonomiesTool;
 
+use BinomeWay\NovaTaxonomiesTool\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
-use BinomeWay\NovaTaxonomiesTool\Http\Middleware\Authorize;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ToolServiceProvider extends ServiceProvider
+class ToolServiceProvider extends PackageServiceProvider
 {
+
+    public function configurePackage(Package $package): void
+    {
+        $package
+            ->name('nova-taxonomies-tool')
+            ->hasMigration('create_taxonomies_tables')
+            ->hasViews()
+        ;
+    }
+
     /**
      * Bootstrap any application services.
      *
      * @return void
      */
-    public function boot()
+    public function packageBooted()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-taxonomies-tool');
+       // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-taxonomies-tool');
 
         $this->app->booted(function () {
             $this->routes();
         });
 
-        Nova::serving(function (ServingNova $event) {
+        /*Nova::serving(function (ServingNova $event) {
             //
-        });
+        });*/
     }
 
     /**
@@ -40,8 +51,8 @@ class ToolServiceProvider extends ServiceProvider
         }
 
         Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/nova-taxonomies-tool')
-                ->group(__DIR__.'/../routes/api.php');
+            ->prefix('nova-vendor/nova-taxonomies-tool')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**
@@ -49,7 +60,7 @@ class ToolServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function packageRegistered()
     {
         $this->app->singleton(Taxonomies::class);
     }
