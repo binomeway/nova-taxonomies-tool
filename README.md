@@ -1,6 +1,6 @@
 # Nova Taxonomies
 
-Using [spatie/laravel-tags](https://spatie.be/docs/laravel-tags/v4/introduction).
+This package uses [spatie/laravel-tags](https://spatie.be/docs/laravel-tags/v4/introduction) and [spatie/nova-tags-field](https://github.com/spatie/nova-tags-field).
 
 # Installation
 
