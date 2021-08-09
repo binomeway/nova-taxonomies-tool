@@ -4,12 +4,13 @@
 namespace BinomeWay\NovaTaxonomiesTool\Resources;
 
 
-use BinomeWay\NovaTaxonomiesTool\Taxonomies;
+use BinomeWay\NovaTaxonomiesTool\Facades\Taxonomies;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
 
 class Tag extends Resource
@@ -20,6 +21,8 @@ class Tag extends Resource
      * @var string
      */
     public static $model = \Spatie\Tags\Tag::class;
+
+    public static $displayInNavigation = false;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -36,6 +39,7 @@ class Tag extends Resource
     public static $search = [
         'id',
         'name',
+        'slug',
         'type',
     ];
 
@@ -43,16 +47,25 @@ class Tag extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make(__('Name'), 'name')->required(),
-            Slug::make(__('Slug'), 'slug')->from('name')->nullable(),
-            Select::make(__('Type'), 'type')->options(function () {
-                return app(Taxonomies::class)->types();
-            })
-                ->displayUsingLabels()
-                ->nullable(),
-            Number::make(__('Order'), 'order_column')->nullable(),
+            Text::make(__('Name'), 'name')
+                ->required()
+                ->sortable(),
 
-            // MorphMany::make('Taggable')->types([])->nullable(),
+            Slug::make(__('Slug'), 'slug')
+                ->from('name')
+                ->sortable()
+                ->nullable(),
+
+            Select::make(__('Type'), 'type')
+                ->options(fn() => Taxonomies::types())
+                ->searchable(fn() => Taxonomies::types()->count() > 10)
+                ->displayUsingLabels()
+                ->sortable()
+                ->nullable(),
+
+            Number::make(__('Order'), 'order_column')
+                ->nullable()
+                ->hideFromIndex(),
         ];
     }
 }
