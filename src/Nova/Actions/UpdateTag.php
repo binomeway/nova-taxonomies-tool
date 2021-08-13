@@ -17,24 +17,24 @@ class UpdateTag extends Action
     use InteractsWithQueue, Queueable;
 
     protected string $tagType;
-    protected string $fieldLabel;
+    protected string $label;
 
-    public function __construct(string $tagType, string $fieldLabel = 'Tags')
+    public function __construct(string $tagType, string $label = 'Tags')
     {
         $this->tagType = $tagType;
-        $this->fieldLabel = (string)__($fieldLabel);
+        $this->label = (string)__($label);
     }
 
 
-    public function withFieldLabel($label)
+    public function withLabel($label): static
     {
-        $this->fieldLabel = $label;
+        $this->label = $label;
 
         return $this;
     }
 
 
-    public function withName(string $name)
+    public function withName(string $name): static
     {
         $this->name = $name;
 
@@ -44,7 +44,7 @@ class UpdateTag extends Action
 
     public function name()
     {
-        return $this->name ?? __('Update :name', ['name' => $this->fieldLabel]);
+        return $this->name ?? __('Update :name', ['name' => $this->label]);
     }
 
     /**
@@ -56,7 +56,6 @@ class UpdateTag extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        //TODO: use only the tag display
         $models->each(function ($model) use ($fields) {
             $tags = collect($fields->get('tags'))->filter()->keys()->toArray();
             $model->syncTagsWithType($tags, $this->tagType);
@@ -73,7 +72,7 @@ class UpdateTag extends Action
         $options = Tag::getWithType($this->tagType)->pluck('name');
 
         return [
-            BooleanGroup::make($this->fieldLabel, 'tags')
+            BooleanGroup::make($this->label, 'tags')
                 ->options($options),
         ];
     }

@@ -36,7 +36,7 @@ class UpdateSingleTag extends UpdateTag
         $options = Tag::getWithType($this->tagType)->pluck('name', 'name');
 
         return [
-            Select::make($this->fieldLabel, 'tag')
+            Select::make($this->label, 'tag')
                 ->options($options)
                 ->required()
                 ->searchable(fn() => $options->count() >= 10),
