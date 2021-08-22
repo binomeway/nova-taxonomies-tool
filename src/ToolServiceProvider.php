@@ -4,8 +4,6 @@ namespace BinomeWay\NovaTaxonomiesTool;
 
 use BinomeWay\NovaTaxonomiesTool\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
-use Laravel\Nova\Events\ServingNova;
-use Laravel\Nova\Nova;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -16,9 +14,9 @@ class ToolServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('nova-taxonomies-tool')
+            ->hasConfigFile()
             ->hasMigration('create_taxonomies_tables')
-            ->hasViews()
-        ;
+            ->hasViews();
     }
 
     /**
@@ -28,7 +26,7 @@ class ToolServiceProvider extends PackageServiceProvider
      */
     public function packageBooted()
     {
-       // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-taxonomies-tool');
+        // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-taxonomies-tool');
 
         $this->app->booted(function () {
             $this->routes();
@@ -62,6 +60,11 @@ class ToolServiceProvider extends PackageServiceProvider
      */
     public function packageRegistered()
     {
-        $this->app->singleton(Taxonomies::class);
+        $this->app->singleton(Taxonomies::class,
+            fn() => new Taxonomies(
+                config('nova-taxonomies-tool.taxonomies_cache.key'),
+                config('nova-taxonomies-tool.taxonomies_cache.ttl')
+            )
+        );
     }
 }

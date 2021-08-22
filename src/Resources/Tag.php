@@ -5,6 +5,7 @@ namespace BinomeWay\NovaTaxonomiesTool\Resources;
 
 
 use BinomeWay\NovaTaxonomiesTool\Facades\Taxonomies;
+use BinomeWay\NovaTaxonomiesTool\Nova\Filters\TypeFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -57,8 +58,8 @@ class Tag extends Resource
                 ->nullable(),
 
             Select::make(__('Type'), 'type')
-                ->options(fn() => Taxonomies::types())
-                ->searchable(fn() => Taxonomies::types()->count() > 10)
+                ->options(fn() => Taxonomies::asSelectOptions())
+                ->searchable(fn() => Taxonomies::asSelectOptions()->count() > 10)
                 ->displayUsingLabels()
                 ->sortable()
                 ->nullable(),
@@ -66,6 +67,13 @@ class Tag extends Resource
             Number::make(__('Order'), 'order_column')
                 ->nullable()
                 ->hideFromIndex(),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            TypeFilter::make(),
         ];
     }
 }
