@@ -96,12 +96,26 @@ use BinomeWay\NovaTaxonomiesTool\Nova\Filters\SingleTag;
 public function filters(Request $request)
     {
         return [
-            SingleTag::make('status')
+            SingleTag::make()
                 ->withName(__('By Status')) // Override the displayed name
+                ->withTagType('status')
         ];
     }
 ```
 
 #### Filter by multiple tags
 
-TODO
+Filter resources by a multiple tags at once.
+
+```php
+use BinomeWay\NovaTaxonomiesTool\Nova\Filters\MultiTags;
+
+public function filters(Request $request)
+    {
+        return [
+              MultiTags::make()
+                ->withName(__('By Position'))
+                ->withTagType('page-position'),
+        ];
+    }
+```
